@@ -1,0 +1,11 @@
+########################################################################
+# How to use git
+########################################################################
+First time you run git:
+$ git clone https://github.com/romansonder/pro4e.git
+
+$ git pull			# download the newest files from git
+
+$ git add *			# select the files you want to upload
+$ git commit			# write in your changes
+$ git push			# upload your files to git
