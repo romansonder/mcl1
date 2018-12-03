@@ -1,0 +1,75 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/shared/data/weiterbildung/mas_me/cas_med/2_sopc/5_uebungen/sopc_u2_cp/4_quartus/de1_soc_top/hdl
+Pde1_soc_pkg
+Z1 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+w1447341108
+R0
+8de1_soc_pkg.vhd
+Fde1_soc_pkg.vhd
+l0
+L11
+VD5eTO[1cUCBcn@IiP3X]^2
+!s100 mGj`@kG^CNL4f^]l9NIQJ0
+Z4 OL;C;10.4a;61
+31
+!s110 1447341135
+!i10b 1
+!s108 1447341135.000000
+!s90 -93|-work|work|de1_soc_pkg.vhd|
+!s107 de1_soc_pkg.vhd|
+!i113 1
+Z5 o-93 -work work
+Z6 tExplicit 1 CheckSynthesis 1 Coverage 1
+Ede1_soc_top
+Z7 w1447340938
+Z8 DPx4 work 11 de1_soc_pkg 0 22 D5eTO[1cUCBcn@IiP3X]^2
+R1
+R2
+R3
+R0
+Z9 8de1_soc_top.vhd
+Z10 Fde1_soc_top.vhd
+l0
+L16
+VdMi3[GQTi;zh7mWK@o:b]0
+!s100 2hZnUNS7m4XZ3:>nM[JSW3
+R4
+31
+Z11 !s110 1447341136
+!i10b 1
+Z12 !s108 1447341136.000000
+Z13 !s90 -93|-work|work|de1_soc_top.vhd|
+Z14 !s107 de1_soc_top.vhd|
+!i113 1
+R5
+R6
+Astruct
+R8
+R1
+R2
+R3
+DEx4 work 11 de1_soc_top 0 22 dMi3[GQTi;zh7mWK@o:b]0
+l123
+L113
+VY>W_fN^D9TF@UG]V2>BM?1
+!s100 9_1z<QKJXL26Zg6F7mTVn2
+R4
+31
+R11
+!i10b 1
+R12
+R13
+R14
+!i113 1
+R5
+R6

@@ -1,0 +1,63 @@
+-- -----------------------------------------------------------------------------
+-- Filename: de1_soc_pkg.vhd
+-- Author  : M. Pichler
+-- Date    : 02.06.2010
+-- Content : 
+-- -----------------------------------------------------------------------------
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.numeric_std.ALL;
+
+PACKAGE de1_soc_pkg IS
+
+  COMPONENT de1_soc_reset IS
+    GENERIC(
+      G_MAX : natural := 64             -- delay for software reset
+      );
+    PORT(
+      clk        : IN  std_ulogic;      -- clock
+      pin_hw_rst : IN  std_ulogic;      -- hardware reset, active high
+      pin_sw_rst : IN  std_ulogic;      -- software reset, active high
+      pll_locked : IN  std_ulogic;      -- pll is stable
+      -- 
+      hw_rst_n   : OUT std_ulogic;  -- system reset, short pulse, active low
+      sw_rst     : OUT std_ulogic   -- software reset, long pulse, active high
+      );
+  END COMPONENT de1_soc_reset;
+
+  COMPONENT system IS
+    PORT (
+      -- Globals
+      clk_clk                : IN    std_logic                     := 'X';
+      reset_n_reset_n        : IN    std_logic                     := 'X';
+      pll_dram_clk_clk       : OUT   std_logic;  -- clk
+      pll_locked_export      : OUT   std_logic;  -- export
+      cpu_reset_resetrequest : IN    std_logic                     := 'X';
+      cpu_reset_resettaken   : OUT   std_logic;  -- resettaken
+      -- Memory/DRAM
+      dram_addr              : OUT   std_logic_vector(12 DOWNTO 0);  -- addr
+      dram_ba                : OUT   std_logic_vector(1 DOWNTO 0);   -- ba
+      dram_cas_n             : OUT   std_logic;  -- cas_n
+      dram_cke               : OUT   std_logic;  -- cke
+      dram_cs_n              : OUT   std_logic;  -- cs_n
+      dram_dq                : INOUT std_logic_vector(15 DOWNTO 0) := (OTHERS => 'X');  -- dq
+      dram_dqm               : OUT   std_logic_vector(1 DOWNTO 0);   -- dqm
+      dram_ras_n             : OUT   std_logic;  -- ras_n
+      dram_we_n              : OUT   std_logic;  -- we_n
+      -- Control/KEY
+      key_export             : IN    std_logic_vector(3 DOWNTO 0)  := (OTHERS => 'X');  -- export
+      -- Control/SWITCH
+      sw_export              : IN    std_logic_vector(7 DOWNTO 0)  := (OTHERS => 'X');  -- export
+      -- Display/LEDR
+      ledr_export            : OUT   std_logic_vector(7 DOWNTO 0);   -- export
+      -- Display/HEX
+      hex_seg5               : OUT   std_logic_vector(6 DOWNTO 0);   -- seg5
+      hex_seg4               : OUT   std_logic_vector(6 DOWNTO 0);   -- seg4
+      hex_seg3               : OUT   std_logic_vector(6 DOWNTO 0);   -- seg3
+      hex_seg2               : OUT   std_logic_vector(6 DOWNTO 0);   -- seg2
+      hex_seg1               : OUT   std_logic_vector(6 DOWNTO 0);   -- seg1
+      hex_seg0               : OUT   std_logic_vector(6 DOWNTO 0)    -- seg0
+      );
+  END COMPONENT system;
+
+END de1_soc_pkg;

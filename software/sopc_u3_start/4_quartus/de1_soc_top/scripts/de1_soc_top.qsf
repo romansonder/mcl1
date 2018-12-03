@@ -1,0 +1,28 @@
+## -----------------------------------------------------------------------------
+## Filename: de1_soc_top.qsf
+## Author  : M. Pichler
+## Date    : 02.06.2010
+## Content : Quartus Settings Masterfile
+## -----------------------------------------------------------------------------
+
+## Global Assignments
+## -----------------------------------------------------------------------------
+source ./scripts/set_global_assignments.qsf
+set_global_assignment -name TOP_LEVEL_ENTITY de1_soc_top
+
+
+## Location Assignments
+## -----------------------------------------------------------------------------
+source ./scripts/set_location_assignments.qsf
+
+
+## Design Files
+## -----------------------------------------------------------------------------
+source ./scripts/set_design_files.qsf
+
+set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"

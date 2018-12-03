@@ -1,0 +1,21 @@
+## -----------------------------------------------------------------------------
+## Filename: set_design_files.qsf
+## Author  : M. Pichler
+## Date    : 02.06.2010
+## Content : Global Quartus Settings
+##           - my_system.qip: Manually generate file: include sources of the 
+##             system, generate by the SOPC Builder
+## -----------------------------------------------------------------------------
+
+## Design Files
+## -----------------------------------------------------------------------------
+set_global_assignment -name SEARCH_PATH ./system/synthesis
+set_global_assignment -name QIP_FILE ./system/synthesis/system.qip
+
+set_global_assignment -name VHDL_FILE hdl/de1_soc_pkg.vhd
+set_global_assignment -name VHDL_FILE hdl/de1_soc_reset.vhd
+set_global_assignment -name VHDL_FILE hdl/de1_soc_top.vhd
+
+# Timing Constraints
+#-----------------------------------------------------
+set_global_assignment -name SDC_FILE scripts/set_timing.sdc
