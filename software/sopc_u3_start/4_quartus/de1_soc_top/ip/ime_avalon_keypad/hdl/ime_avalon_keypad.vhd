@@ -1,36 +1,36 @@
 --------------------------------------------------------------------------------
 -- Filename: keypad.vhd
--- Author  : Tobias Klenke & Roman Sonder
+-- Author  : Tobias Klenke & Roman Sonder & Samuel Wey
 -- Date    : 03.12.2018
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-entity num_kp is
-    port ( 
+ENTITY num_kp IS
+    PORT ( 
     -- Avalon Clock & Reset Interface
-    clk       : in  std_logic;
-    reset_n   : in  std_logic;
+    clk           : IN  STD_LOGIC;
+    reset_n       : IN  STD_LOGIC;
     -- Avalon Conduit Interface
-    row_val   : in  std_logic_vector (3 downto 1);
-    row_idx   : out STD_LOGIC_VECTOR (4 downto 1);
+    row_val       : IN  STD_LOGIC_VECTOR (3 DOWNTO 1);
+    row_idx       : OUT STD_LOGIC_VECTOR (4 DOWNTO 1);
     -- Avalon-MM Interface / Slave Port
-    avs_read  : IN  std_logic;
-    avs_readdata	: out std_logic_vector (4 downto 1);
+    avs_read      : IN  STD_LOGIC;
+    avs_readdata  : OUT STD_LOGIC_VECTOR (4 DOWNTO 1);
     -- Avalon Interrupt Interface
-    hit       : out STD_LOGIC
+    hit           : OUT STD_LOGIC
     );
-end entity num_kp;
+END ENTITY num_kp;
 
-architecture behavioral of num_kp is
-    constant row_idx_res      : std_logic_vector (3 downto 0)   := "1110";
-    constant cv_res           : std_logic_vector (2 downto 0)   := "111";
+ARCHITECTURE behavioral OF num_kp IS
+    CONSTANT row_idx_res      : STD_LOGIC_VECTOR (3 DOWNTO 0):= "1110";
+    CONSTANT cv_res           : STD_LOGIC_VECTOR (2 DOWNTO 0):= "111";
     
-    signal curr_row_idx       : std_logic_vector (3 downto 0)   := row_idx_res;
-    signal CV1, CV2, CV3, CV4 : std_logic_vector (3 downto 1)   := cv_res;
-    signal sw_value	          : std_logic_vector (4 downto 1);
-begin
+    SIGNAL curr_row_idx       : STD_LOGIC_VECTOR (3 DOWNTO 0):= row_idx_res;
+    SIGNAL CV1, CV2, CV3, CV4 : STD_LOGIC_VECTOR (3 DOWNTO 1):= cv_res;
+    SIGNAL sw_value	          : STD_LOGIC_VECTOR (4 DOWNTO 1);
+BEGIN
   
   p_decode : PROCESS(clk, reset_n)
   BEGIN
@@ -41,56 +41,56 @@ begin
       CV3          <= cv_res;
       CV4          <= cv_res;
     ELSIF rising_edge(clk) THEN
-      case curr_row_idx is
-        when "1110" =>
-          CV1 <= row_val;
-          curr_row_idx <= "1101";
-        when "1101" =>
-          CV2 <= row_val;
-          curr_row_idx <= "1011";
-        when "1011" =>
-          CV3 <= row_val;
-          curr_row_idx <= "0111";
-        when "0111" =>
-          CV4 <= row_val;
-          curr_row_idx <= row_idx_res;
-        when others =>
-          curr_row_idx <= row_idx_res;
-        END case;
+      CASE curr_row_idx IS
+        WHEN "1110" =>
+          CV1           <= row_val;
+          curr_row_idx  <= "1101";
+        WHEN "1101" =>
+          CV2           <= row_val;
+          curr_row_idx  <= "1011";
+        WHEN "1011" =>
+          CV3           <= row_val;
+          curr_row_idx  <= "0111";
+        WHEN "0111" =>
+          CV4           <= row_val;
+          curr_row_idx  <= row_idx_res;
+        WHEN OTHERS =>
+          curr_row_idx  <= row_idx_res;
+        END CASE;
 		END IF;
   END PROCESS p_decode;
   
-  out_proc: process (clk, reset_n)
-  begin
+  out_proc: PROCESS (clk, reset_n)
+  BEGIN
   
     IF reset_n = '0' THEN
         hit <= '0';
     ELSIF rising_edge(clk) THEN
-      if (CV1 = "111" AND CV2 = "111" AND CV3 = "111") then
+      IF (CV1 = "111" AND CV2 = "111" AND CV3 = "111") THEN
         -- Do nothing
-      else
+      ELSE
         hit <= '1';
-        if CV1(1) = '0' then sw_value <= X"1";
-        elsif CV1(2) = '0' then sw_value <= X"2";
-        elsif CV1(3) = '0' then sw_value <= X"3";
-        elsif CV2(1) = '0' then sw_value <= X"4";
-        elsif CV2(2) = '0' then sw_value <= X"5";
-        elsif CV2(3) = '0' then sw_value <= X"6";
-        elsif CV3(1) = '0' then sw_value <= X"7";
-        elsif CV3(2) = '0' then sw_value <= X"8";
-        elsif CV3(3) = '0' then sw_value <= X"9";
-        elsif CV4(1) = '0' then sw_value <= X"A";
-        elsif CV4(2) = '0' then sw_value <= X"0";
-        elsif CV4(3) = '0' then sw_value <= X"B";
-        else hit <= '0'; sw_value <= X"B";
-        end if;
-      end if;
+        IF CV1(1) = '0' THEN sw_value <= X"1";
+        ELSIF CV1(2) = '0' THEN sw_value <= X"2";
+        ELSIF CV1(3) = '0' THEN sw_value <= X"3";
+        ELSIF CV2(1) = '0' THEN sw_value <= X"4";
+        ELSIF CV2(2) = '0' THEN sw_value <= X"5";
+        ELSIF CV2(3) = '0' THEN sw_value <= X"6";
+        ELSIF CV3(1) = '0' THEN sw_value <= X"7";
+        ELSIF CV3(2) = '0' THEN sw_value <= X"8";
+        ELSIF CV3(3) = '0' THEN sw_value <= X"9";
+        ELSIF CV4(1) = '0' THEN sw_value <= X"A";
+        ELSIF CV4(2) = '0' THEN sw_value <= X"0";
+        ELSIF CV4(3) = '0' THEN sw_value <= X"B";
+        ELSE hit <= '0'; sw_value <= X"B";
+        END IF;
+      END IF;
 		END IF;
     
-  end process;
+  END PROCESS;
   
-  out_value_proc: process (avs_read)
-  begin
+  out_value_proc: PROCESS (avs_read)
+  BEGIN
   
     IF rising_edge(avs_read) THEN
       avs_readdata <= sw_value;
@@ -98,8 +98,8 @@ begin
       hit <= '0';
 		END IF;
     
-  end process;
+  END PROCESS;
   
-  row_idx <= curr_row_idx;    
+  row_idx <= curr_row_idx;
     
-end architecture behavioral;
+END ARCHITECTURE behavioral;
