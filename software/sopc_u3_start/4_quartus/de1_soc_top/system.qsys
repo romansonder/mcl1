@@ -35,6 +35,14 @@
          type = "boolean";
       }
    }
+   element cpu.debug_mem_slave
+   {
+      datum baseAddress
+      {
+         value = "134744064";
+         type = "String";
+      }
+   }
    element dram_ctrl
    {
       datum _sortIndex
@@ -53,6 +61,22 @@
       datum baseAddress
       {
          value = "67108864";
+         type = "String";
+      }
+   }
+   element ime_avalon_keypad_0
+   {
+      datum _sortIndex
+      {
+         value = "12";
+         type = "int";
+      }
+   }
+   element ime_avalon_keypad_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "134746212";
          type = "String";
       }
    }
@@ -232,6 +256,22 @@
          type = "String";
       }
    }
+   element system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element timer
    {
       datum _sortIndex
@@ -288,6 +328,11 @@
    type="conduit"
    dir="end" />
  <interface
+   name="keypad"
+   internal="ime_avalon_keypad_0.conduit_end_0"
+   type="conduit"
+   dir="end" />
+ <interface
    name="ledr"
    internal="ledr_pio.external_connection"
    type="conduit"
@@ -326,7 +371,7 @@
   <parameter name="dataAddrWidth" value="28" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='dram_ctrl.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='onchip_memory.s1' start='0x8040000' end='0x8067100' type='altera_avalon_onchip_memory2.s1' /><slave name='cpu.debug_mem_slave' start='0x8080800' end='0x8081000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='timer.s1' start='0x8081000' end='0x8081020' type='altera_avalon_timer.s1' /><slave name='switch_pio.s1' start='0x8081020' end='0x8081030' type='altera_avalon_pio.s1' /><slave name='key_pio.s1' start='0x8081030' end='0x8081040' type='altera_avalon_pio.s1' /><slave name='ledr_pio.s1' start='0x8081040' end='0x8081050' type='altera_avalon_pio.s1' /><slave name='sysid.control_slave' start='0x8081050' end='0x8081058' type='altera_avalon_sysid_qsys.control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8081058' end='0x8081060' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='seg7.s1' start='0x8081060' end='0x8081064' type='ime_avalon_seg7.s1' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='dram_ctrl.s1' start='0x4000000' end='0x8000000' type='altera_avalon_new_sdram_controller.s1' /><slave name='onchip_memory.s1' start='0x8040000' end='0x8067100' type='altera_avalon_onchip_memory2.s1' /><slave name='cpu.debug_mem_slave' start='0x8080800' end='0x8081000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='timer.s1' start='0x8081000' end='0x8081020' type='altera_avalon_timer.s1' /><slave name='switch_pio.s1' start='0x8081020' end='0x8081030' type='altera_avalon_pio.s1' /><slave name='key_pio.s1' start='0x8081030' end='0x8081040' type='altera_avalon_pio.s1' /><slave name='ledr_pio.s1' start='0x8081040' end='0x8081050' type='altera_avalon_pio.s1' /><slave name='sysid.control_slave' start='0x8081050' end='0x8081058' type='altera_avalon_sysid_qsys.control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x8081058' end='0x8081060' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='seg7.s1' start='0x8081060' end='0x8081064' type='ime_avalon_seg7.s1' /><slave name='ime_avalon_keypad_0.avalon_slave_0' start='0x8081064' end='0x8081065' type='ime_avalon_keypad.avalon_slave_0' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -372,7 +417,7 @@
   <parameter name="instruction_master_high_performance_paddr_size" value="0" />
   <parameter name="instruction_master_paddr_base" value="0" />
   <parameter name="instruction_master_paddr_size" value="0" />
-  <parameter name="internalIrqMaskSystemInfo" value="19" />
+  <parameter name="internalIrqMaskSystemInfo" value="23" />
   <parameter name="io_regionbase" value="0" />
   <parameter name="io_regionsize" value="0" />
   <parameter name="master_addr_map" value="false" />
@@ -513,6 +558,11 @@
   <parameter name="registerDataIn" value="true" />
   <parameter name="rowWidth" value="13" />
  </module>
+ <module
+   name="ime_avalon_keypad_0"
+   kind="ime_avalon_keypad"
+   version="17.1"
+   enabled="1" />
  <module
    name="jtag_uart"
    kind="altera_avalon_jtag_uart"
@@ -842,6 +892,15 @@
    kind="avalon"
    version="17.1"
    start="cpu.data_master"
+   end="ime_avalon_keypad_0.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x08081064" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="17.1"
+   start="cpu.data_master"
    end="sysid.control_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x08081050" />
@@ -949,6 +1008,18 @@
    version="17.1"
    start="pll.outclk0"
    end="onchip_memory.clk1" />
+ <connection
+   kind="clock"
+   version="17.1"
+   start="pll.outclk0"
+   end="ime_avalon_keypad_0.clock" />
+ <connection
+   kind="interrupt"
+   version="17.1"
+   start="cpu.irq"
+   end="ime_avalon_keypad_0.interrupt_sender_0">
+  <parameter name="irqNumber" value="2" />
+ </connection>
  <connection kind="interrupt" version="17.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -1000,6 +1071,11 @@
    kind="reset"
    version="17.1"
    start="clk_in.clk_reset"
+   end="ime_avalon_keypad_0.reset" />
+ <connection
+   kind="reset"
+   version="17.1"
+   start="clk_in.clk_reset"
    end="onchip_memory.reset1" />
  <connection
    kind="reset"
@@ -1046,6 +1122,11 @@
    version="17.1"
    start="cpu.debug_reset_request"
    end="seg7.reset" />
+ <connection
+   kind="reset"
+   version="17.1"
+   start="cpu.debug_reset_request"
+   end="ime_avalon_keypad_0.reset" />
  <connection
    kind="reset"
    version="17.1"
