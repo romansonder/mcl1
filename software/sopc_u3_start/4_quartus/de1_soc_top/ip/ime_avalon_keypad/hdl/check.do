@@ -13,12 +13,12 @@ if ![file isdirectory work] {
 }
 
 vcom -93 seg7_lut.vhd
-vcom -93 ime_avalon_seg7.vhd
-vcom -93 ime_avalon_seg7_tb.vhd
+vcom -93 ime_avalon_keypad.vhd
+vcom -93 ime_avalon_keypad_tb.vhd
 
 echo "Compilation DONE"
 
-vsim work.ime_avalon_seg7_tb
+vsim work.ime_avalon_keypad_tb
 
 add wave *
 

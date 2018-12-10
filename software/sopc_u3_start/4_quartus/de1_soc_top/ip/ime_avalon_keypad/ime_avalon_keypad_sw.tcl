@@ -2,14 +2,14 @@
 # Filename: ime_avalon_seg7_sw.tcl
 # Author  : michael.pichler@fhnw.ch
 # Date    : 21.01.2014
-# Content : Driver for seven segment display
+# Content : Driver for keypad
 # -----------------------------------------------------
 
 # Create a new driver
-create_driver ime_avalon_seg7_driver
+create_driver ime_avalon_keypad_driver
 
-# Associate it with some hardware known as "ime_avalon_seg7"
-set_sw_property hw_class_name ime_avalon_seg7
+# Associate it with some hardware known as "ime_avalon_keypad"
+set_sw_property hw_class_name ime_avalon_keypad
 
 # The version of this driver
 set_sw_property version 13.0
@@ -29,11 +29,11 @@ set_sw_property bsp_subdirectory drivers
 #
 
 # C/C++ source files
-add_sw_property c_source HAL/src/ime_avalon_seg7.c
+add_sw_property c_source HAL/src/ime_avalon_keypad.c
 
 # Include files
-add_sw_property include_source HAL/inc/ime_avalon_seg7.h
-add_sw_property include_source inc/ime_avalon_seg7_regs.h
+add_sw_property include_source HAL/inc/ime_avalon_keypad.h
+add_sw_property include_source inc/ime_avalon_keypad_regs.h
 
 # This driver supports HAL only BSP (OS) types (no support for UCOSII)
 add_sw_property supported_bsp_type HAL
