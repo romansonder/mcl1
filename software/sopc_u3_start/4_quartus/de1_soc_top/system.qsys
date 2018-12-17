@@ -352,8 +352,8 @@
   <parameter name="resetSynchronousEdges" value="DEASSERT" />
  </module>
  <module name="cpu" kind="altera_nios2_gen2" version="17.1" enabled="1">
-  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="5" />
-  <parameter name="AUTO_CLK_RESET_DOMAIN" value="5" />
+  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="4" />
+  <parameter name="AUTO_CLK_RESET_DOMAIN" value="4" />
   <parameter name="AUTO_DEVICE" value="5CSEMA5F31C6" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="bht_ramBlockType" value="Automatic" />
@@ -543,7 +543,7 @@
   <parameter name="casLatency" value="3" />
   <parameter name="clockRate" value="50000000" />
   <parameter name="columnWidth" value="10" />
-  <parameter name="componentName">$${FILENAME}_dram_ctrl</parameter>
+  <parameter name="componentName" value="system_dram_ctrl" />
   <parameter name="dataWidth" value="16" />
   <parameter name="generateSimulationModel" value="false" />
   <parameter name="initNOPDelay" value="0.0" />
@@ -616,7 +616,7 @@
    version="17.1"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName">$${FILENAME}_onchip_memory</parameter>
+  <parameter name="autoInitializationFileName">system_onchip_memory</parameter>
   <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />

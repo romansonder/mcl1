@@ -42,7 +42,11 @@ ENTITY de1_soc_top IS
     dram_ras_n : OUT   std_logic;       -- SDRAM row address strobe
     dram_we_n  : OUT   std_logic;       -- SDRAM write enable
     dram_ba    : OUT   std_logic_vector(1 DOWNTO 0); -- SDRAM bank address[1:0]
-    dram_dqm   : OUT   std_logic_vector(1 DOWNTO 0)  -- SDRAM data mask[1:0]
+    dram_dqm   : OUT   std_logic_vector(1 DOWNTO 0);  -- SDRAM data mask[1:0]
+    -- keypad ---
+    keypad_row_val             : in    std_logic_vector(2 downto 0)  := (others => 'X'); -- row_val
+    keypad_row_idx             : out   std_logic_vector(3 downto 0)
+            
     ---- sd card Interface -----------------------------------------------------
     --sd_dat      : IN    std_logic;                      -- SD card data
     --sd_dat3     : IN    std_logic;                      -- SD card data 3
@@ -163,13 +167,17 @@ BEGIN
       sw_export              => sw(7 DOWNTO 0),
       -- Display/LEDR
       ledr_export            => ledr(7 DOWNTO 0),
+      -- Keypad --
+      keypad_row_val             => keypad_row_val,             --       keypad.row_val
+      keypad_row_idx             => keypad_row_idx,             --             .row_idx
+      keypad_export              => hex0,              --             .export
       -- Display/7-Segement
       hex_seg5               => hex5,
       hex_seg4               => hex4,
       hex_seg3               => hex3,
       hex_seg2               => hex2,
       hex_seg1               => hex1,
-      hex_seg0               => hex0
+      hex_seg0               => open
       );
 
 END struct;

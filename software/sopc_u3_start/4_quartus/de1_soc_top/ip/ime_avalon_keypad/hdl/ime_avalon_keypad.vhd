@@ -20,19 +20,34 @@ ENTITY ime_avalon_keypad IS
     avs_readdata      : OUT STD_LOGIC_VECTOR (8 DOWNTO 1);
     avs_waitrequest   : OUT  STD_LOGIC;
     -- Avalon Interrupt Interface / Transmitter
-    ins_pushed        : OUT STD_LOGIC
+    ins_pushed        : OUT STD_LOGIC;
+    coe_seg0      		: OUT std_logic_vector(6 DOWNTO 0)
     );
 END ENTITY ime_avalon_keypad;
 
 ARCHITECTURE behavioral OF ime_avalon_keypad IS
-    CONSTANT row_idx_res      : STD_LOGIC_VECTOR (3 DOWNTO 0):= "1110";
-    CONSTANT cv_res           : STD_LOGIC_VECTOR (2 DOWNTO 0):= "111";
-    CONSTANT sw_value_res     : STD_LOGIC_VECTOR (8 DOWNTO 1):= X"0C";
-    
-    SIGNAL curr_row_idx       : STD_LOGIC_VECTOR (3 DOWNTO 0):= row_idx_res;
-    SIGNAL CV1, CV2, CV3, CV4 : STD_LOGIC_VECTOR (3 DOWNTO 1):= cv_res;
-    SIGNAL sw_value	          : STD_LOGIC_VECTOR (8 DOWNTO 1):= sw_value_res;
-    SIGNAL set_irq            : STD_LOGIC;
+  CONSTANT row_idx_res      : STD_LOGIC_VECTOR (3 DOWNTO 0):= "1110";
+  CONSTANT cv_res           : STD_LOGIC_VECTOR (2 DOWNTO 0):= "111";
+  CONSTANT sw_value_res     : STD_LOGIC_VECTOR (8 DOWNTO 1):= X"0C";
+  
+  SIGNAL curr_row_idx       : STD_LOGIC_VECTOR (3 DOWNTO 0):= row_idx_res;
+  SIGNAL CV1, CV2, CV3, CV4 : STD_LOGIC_VECTOR (3 DOWNTO 1):= cv_res;
+  SIGNAL sw_value	          : STD_LOGIC_VECTOR (8 DOWNTO 1):= sw_value_res;
+  SIGNAL set_irq            : STD_LOGIC;
+  SIGNAL oseg8              : std_logic_vector(6 DOWNTO 0);
+  SIGNAL btn_pressed        : STD_LOGIC;
+  
+  -------------------------------------------------------------------------------
+  -- Components         
+  -------------------------------------------------------------------------------
+  COMPONENT seg7_lut
+    PORT(
+      clk     : IN  std_logic;
+      reset_n : IN  std_logic;
+      idig    : IN  std_logic_vector(3 DOWNTO 0);
+      oseg    : OUT std_logic_vector(6 DOWNTO 0)
+      );
+  END COMPONENT seg7_lut;
 BEGIN
   
   p_decode : PROCESS(csi_clk, rsi_reset_n)
@@ -44,22 +59,24 @@ BEGIN
       CV3          <= cv_res;
       CV4          <= cv_res;
     ELSIF rising_edge(csi_clk) THEN
-      CASE curr_row_idx IS
-        WHEN "1110" =>
-          CV1           <= coe_row_val;
-          curr_row_idx  <= "1101";
-        WHEN "1101" =>
-          CV2           <= coe_row_val;
-          curr_row_idx  <= "1011";
-        WHEN "1011" =>
-          CV3           <= coe_row_val;
-          curr_row_idx  <= "0111";
-        WHEN "0111" =>
-          CV4           <= coe_row_val;
-          curr_row_idx  <= row_idx_res;
-        WHEN OTHERS =>
-          curr_row_idx  <= row_idx_res;
-        END CASE;
+      IF btn_pressed = '0' THEN
+        CASE curr_row_idx IS
+          WHEN "1110" =>
+            CV1           <= coe_row_val;
+            curr_row_idx  <= "1101";
+          WHEN "1101" =>
+            CV2           <= coe_row_val;
+            curr_row_idx  <= "1011";
+          WHEN "1011" =>
+            CV3           <= coe_row_val;
+            curr_row_idx  <= "0111";
+          WHEN "0111" =>
+            CV4           <= coe_row_val;
+            curr_row_idx  <= row_idx_res;
+          WHEN OTHERS =>
+            curr_row_idx  <= row_idx_res;
+          END CASE;
+      END IF;
 		END IF;
   END PROCESS p_decode;
   
@@ -69,11 +86,14 @@ BEGIN
     IF rsi_reset_n = '0' THEN        
       sw_value     <= sw_value_res;
       set_irq      <= '0';
+      btn_pressed  <= '0';
     ELSIF rising_edge(csi_clk) THEN
-      set_irq      <= '0';
+      set_irq         <= '0';
       IF (CV1 = "111" AND CV2 = "111" AND CV3 = "111") THEN
-          sw_value <= X"0C";
-      ELSE        
+          sw_value    <= X"0C";
+          btn_pressed <= '0';
+      ELSE
+        btn_pressed <= '1';
         IF    CV1(1) = '0' THEN sw_value <= X"01"; set_irq <= '1';
         ELSIF CV1(2) = '0' THEN sw_value <= X"02"; set_irq <= '1';
         ELSIF CV1(3) = '0' THEN sw_value <= X"03"; set_irq <= '1';
@@ -113,6 +133,16 @@ BEGIN
 		END IF;
     
   END PROCESS;
+  
+  digit_i0 : seg7_lut
+    PORT MAP(
+      clk     => csi_clk,
+      reset_n => rsi_reset_n,
+      idig    => sw_value(4 DOWNTO 1),
+      oseg    => oseg8
+      );
+      
+  coe_seg0 <= oseg8;
   
   coe_row_idx     <= curr_row_idx;
     

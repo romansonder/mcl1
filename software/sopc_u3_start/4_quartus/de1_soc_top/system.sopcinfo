@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="system" kind="system" version="1.0" fabric="QSYS">
  <!-- Format version 17.1 590 (Future versions may contain additional information.) -->
- <!-- 2018.12.10.18:58:51 -->
+ <!-- 2018.12.17.18:36:10 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
@@ -4864,6 +4864,12 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>4</width>
     <role>row_idx</role>
+   </port>
+   <port>
+    <name>coe_seg0</name>
+    <direction>Output</direction>
+    <width>7</width>
+    <role>export</role>
    </port>
   </interface>
   <interface name="avalon_slave_0" kind="avalon_slave" version="17.1">

@@ -56,7 +56,11 @@ PACKAGE de1_soc_pkg IS
       hex_seg3               : OUT   std_logic_vector(6 DOWNTO 0);   -- seg3
       hex_seg2               : OUT   std_logic_vector(6 DOWNTO 0);   -- seg2
       hex_seg1               : OUT   std_logic_vector(6 DOWNTO 0);   -- seg1
-      hex_seg0               : OUT   std_logic_vector(6 DOWNTO 0)    -- seg0
+      hex_seg0               : OUT   std_logic_vector(6 DOWNTO 0);    -- seg0
+          -- keypad ---
+    keypad_row_val             : in    std_logic_vector(2 downto 0)  := (others => 'X'); -- row_val
+    keypad_row_idx             : out   std_logic_vector(3 downto 0);                     -- row_idx
+    keypad_export              : out   std_logic_vector(6 downto 0)  
       );
   END COMPONENT system;
 
